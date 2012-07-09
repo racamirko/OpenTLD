@@ -27,6 +27,7 @@
 #include "NNClassifier.h"
 #include "TLDUtil.h"
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -88,6 +89,25 @@ void TLD::selectObject(Mat img, Rect * bb) {
 	valid = true;
 
 	initialLearning();
+
+}
+
+void TLD::addObject(Mat img, Rect * bb) {
+	//Delete old object
+	//detectorCascade->release();
+
+	detectorCascade->objWidth = bb->width;
+	detectorCascade->objHeight = bb->height;
+
+	//Init detector cascade
+	//detectorCascade->init();
+
+	currImg = img;
+	currBB = bb;
+	currConf = 1;
+	valid = true;
+
+	//initialLearning();
 
 }
 

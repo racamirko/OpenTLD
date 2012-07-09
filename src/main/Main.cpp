@@ -52,7 +52,7 @@ void Main::doWork() {
 
 		initialBB[0] = box.x;
 		initialBB[1] = box.y;
-		
+
 		if (box.width < 0) {
 			initialBB[0] += box.width;
 			initialBB[2] = abs(box.width);
@@ -209,6 +209,16 @@ void Main::doWork() {
 					Rect r = Rect(box);
 
 					tld->selectObject(grey, &r);
+				}
+				if(key == 'v') {
+					CvRect box;
+					if(getBBFromUser(img, box, gui) == PROGRAM_EXIT) {
+						break;
+					}
+
+					Rect r = Rect(box);
+
+					tld->addObject(grey, &r);
 				}
 			}
 
