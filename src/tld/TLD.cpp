@@ -77,11 +77,11 @@ void TLD::selectObject(Mat img, Rect * bb) {
 	//Delete old object
 	detectorCascade->release();
 
-	detectorCascade->objWidth = bb->width;
-	detectorCascade->objHeight = bb->height;
+//	detectorCascade->objWidth = bb->width;
+//	detectorCascade->objHeight = bb->height;
 
 	//Init detector cascade
-	detectorCascade->init();
+	detectorCascade->init(bb->width, bb->height);
 
 	currImg = img;
 	currBB = bb;
@@ -96,8 +96,8 @@ void TLD::addObject(Mat img, Rect * bb) {
 	//Delete old object
 	//detectorCascade->release();
 
-	detectorCascade->objWidth = bb->width;
-	detectorCascade->objHeight = bb->height;
+	//detectorCascade->objWidth = bb->width;
+	//detectorCascade->objHeight = bb->height;
 
 	//Init detector cascade
 	//detectorCascade->init();
