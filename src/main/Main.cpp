@@ -111,17 +111,17 @@ void Main::doWork() {
 			skipProcessingOnce = false;
 		}
 
-    	if(printResults != NULL) {
+  	if(printResults != NULL) {
 			if(tld->currBB != NULL) {
 				fprintf(resultsFile, "%d %.2d %.2d %.2d %.2d %f\n", imAcq->currentFrame-1, tld->currBB->x, tld->currBB->y, tld->currBB->width, tld->currBB->height, tld->currConf);
 			} else {
 				fprintf(resultsFile, "%d NaN NaN NaN NaN NaN\n", imAcq->currentFrame-1);
 			}
-    	}
+  	}
 
-    	double toc = (cvGetTickCount() - tic)/cvGetTickFrequency();
+   	double toc = (cvGetTickCount() - tic)/cvGetTickFrequency();
 
-    	toc = toc / 1000000;
+  	toc = toc / 1000000;
 
 		float fps = 1/toc;
 
@@ -202,23 +202,23 @@ void Main::doWork() {
 
 				if(key == 'r') {
 					CvRect box;
-					if(getBBFromUser(img, box, gui) == PROGRAM_EXIT) {
+					char action = getBBFromUser(img, box, gui);
+					if( action == PROGRAM_EXIT) {
 						break;
+					} else if ( action == SUCCESS) {
+						Rect r = Rect(box);
+						tld->selectObject(grey, &r);
 					}
-
-					Rect r = Rect(box);
-
-					tld->selectObject(grey, &r);
 				}
-				if(key == 'v') {
+				if(key == 't') {
 					CvRect box;
-					if(getBBFromUser(img, box, gui) == PROGRAM_EXIT) {
+					int action = getBBFromUser(img, box, gui);
+					if( action == PROGRAM_EXIT) {
 						break;
+					} else if ( action == SUCCESS) {
+						Rect r = Rect(box);
+						tld->addObject(grey, &r);
 					}
-
-					Rect r = Rect(box);
-
-					tld->addObject(grey, &r);
 				}
 			}
 

@@ -73,7 +73,7 @@ DetectorCascade::~DetectorCascade() {
 
 void DetectorCascade::init() {
 	if(imgWidth == -1 || imgHeight == -1 || imgWidthStep == -1 || objWidth == -1 || objHeight == -1) {
-		//printf("Error: Window dimensions not set\n"); //TODO: Convert this to exception
+		printf("Error: Window dimensions not set\n"); //TODO: Convert this to exception
 	}
 
 	initWindowsAndScales();
@@ -120,7 +120,7 @@ void DetectorCascade::release() {
 	foregroundDetector->release();
 	ensembleClassifier->release();
 	nnClassifier->release();
-	
+
 	clustering->release();
 
 	numWindows = 0;
@@ -154,7 +154,7 @@ void DetectorCascade::initWindowsAndScales() {
 
 	int windowIndex = 0;
 
-    scales = new Size[maxScale-minScale+1];
+	scales = new Size[maxScale-minScale+1];
 
 	numWindows = 0;
 
@@ -163,7 +163,7 @@ void DetectorCascade::initWindowsAndScales() {
 		float scale = pow(1.2,i);
 		int w = (int)objWidth*scale;
 		int h = (int)objHeight*scale;
-		int ssw,ssh;
+		int ssw,ssh;//scale shift width/height ?
 		if(useShift) {
 			ssw = max<float>(1,w*shift);
 			ssh = max<float>(1,h*shift);

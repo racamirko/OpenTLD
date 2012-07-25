@@ -28,8 +28,17 @@
 
 #include <string>
 	using std::string;
+#include <stdio.h>
 
 namespace tld {
+
+#ifdef __unix__
+const char RETURN = '\n';
+#endif
+#if defined _WIN32 || defined __APPLE__
+const char RETURN = '\n';
+#endif
+const char ESCAPE = 27;
 
 Gui::Gui() :
 	m_window_name("tld") {
@@ -87,6 +96,8 @@ static void mouseHandler(int event, int x, int y, int flags, void* param) {
 	}
 }
 
+
+
 // TODO: member of Gui
 // --> problem: callback function mouseHandler as member!
 int getBBFromUser(IplImage * img, CvRect & rect, Gui * gui) {
@@ -98,22 +109,26 @@ int getBBFromUser(IplImage * img, CvRect & rect, Gui * gui) {
 	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
 
 	cvSetMouseCallback(window_name.c_str(), mouseHandler, NULL);
-	cvPutText(img0, "Draw a bounding box and press Enter", cvPoint(0, 60),
+	cvPutText(img0, "Draw a bounding box and press Enter (or press Esc to cancel)", cvPoint(0, 60),
 			&font, cvScalar(255, 255, 0));
 	cvShowImage(window_name.c_str(), img0);
 
 	while(!correctBB) {
 		char key = cvWaitKey(0);
+		//printf("key %d\n", key);
 		if(tolower(key) == 'q') {
 			return PROGRAM_EXIT;
 		}
-#ifdef __unix__
-		if((key == '\n') && (bb->x != -1) && (bb->y != -1)) {
-#endif
-#if defined _WIN32 || defined __APPLE__
-		if((key == '\r') && (bb->x != -1) && (bb->y != -1)) {
-#endif
-			correctBB = true;
+		if(key == RETURN) {
+			if((bb->x != -1) && (bb->y != -1)) {
+				correctBB = true;
+			}
+		}
+		if(key == ESCAPE) {
+			cvSetMouseCallback(window_name.c_str(), NULL, NULL);
+			cvReleaseImage(&img0);
+			cvReleaseImage(&img1);
+			return CANCEL;
 		}
 	}
 

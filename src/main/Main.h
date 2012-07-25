@@ -33,6 +33,7 @@
 using namespace tld;
 
 enum Retval {
+	CANCEL = -1,
 	PROGRAM_EXIT = 0,
 	SUCCESS = 1
 };

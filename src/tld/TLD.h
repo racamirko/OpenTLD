@@ -40,6 +40,7 @@ class TLD {
 	void fuseHypotheses();
 	void learn();
 	void initialLearning();
+	void addPositiveFromCurrentBB(vector<int>* negativeIndices, vector<NormalizedPatch>* patches);
 public:
 	bool trackerEnabled;
 	bool detectorEnabled;

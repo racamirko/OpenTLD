@@ -108,7 +108,10 @@ void TLD::addObject(Mat img, Rect * bb) {
 	valid = true;
 
 	//initialLearning();
+ 	vector<int> negativeIndices;
+	vector<NormalizedPatch> patches;
 
+	addPositiveFromCurrentBB(&negativeIndices, &patches);
 }
 
 void TLD::processImage(Mat img) {
@@ -177,7 +180,7 @@ void TLD::fuseHypotheses() {
 	}*/
 }
 
-void TLD::initialLearning() {
+void TLD::addPositiveFromCurrentBB(vector<int>* negativeIndices, vector<NormalizedPatch>* patches) {
 	learning = true; //This is just for display purposes
 
 	DetectionResult* detectionResult = detectorCascade->detectionResult;
@@ -199,7 +202,6 @@ void TLD::initialLearning() {
 	//Add all bounding boxes with high overlap
 
 	vector< pair<int,float> > positiveIndices;
-	vector<int> negativeIndices;
 
 	//First: Find overlapping positive and negative patches
 
@@ -213,16 +215,14 @@ void TLD::initialLearning() {
 			float variance = detectionResult->variances[i];
 
 			if(!detectorCascade->varianceFilter->enabled || variance > detectorCascade->varianceFilter->minVar) { //TODO: This check is unnecessary if minVar would be set before calling detect.
-				negativeIndices.push_back(i);
+				negativeIndices->push_back(i);
 			}
 		}
 	}
 
 	sort(positiveIndices.begin(), positiveIndices.end(), tldSortByOverlapDesc);
 
-	vector<NormalizedPatch> patches;
-
-	patches.push_back(patch); //Add first patch to patch list
+	patches->push_back(patch); //Add first patch to patch list
 
 	int numIterations = std::min<size_t>(positiveIndices.size(), 10); //Take at most 10 bounding boxes (sorted by overlap)
 	for(int i = 0; i < numIterations; i++) {
@@ -231,6 +231,16 @@ void TLD::initialLearning() {
 		//TODO: Somewhere here image warping might be possible
 		detectorCascade->ensembleClassifier->learn(currImg, &detectorCascade->windows[TLD_WINDOW_SIZE*idx], true, &detectionResult->featureVectors[detectorCascade->numTrees*idx]);
 	}
+
+	delete[] overlap;
+}
+
+void TLD::initialLearning() {
+
+	vector<int> negativeIndices;
+	vector<NormalizedPatch> patches;
+
+	addPositiveFromCurrentBB(&negativeIndices, &patches);
 
 	srand(1); //TODO: This is not guaranteed to affect random_shuffle
 
@@ -248,7 +258,6 @@ void TLD::initialLearning() {
 
 	detectorCascade->nnClassifier->learn(patches);
 
-	delete[] overlap;
 
 }
 
