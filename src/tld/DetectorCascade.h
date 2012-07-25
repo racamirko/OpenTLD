@@ -45,6 +45,7 @@ class DetectorCascade {
 	//Working data
 	int numScales;
 	Size* scales;
+	void preinit(int, int);
 public:
 	//Configurable members
 	int minScale;
@@ -81,9 +82,11 @@ public:
 	void propagateMembers();
 
 	DetectorCascade();
+	DetectorCascade(int, int);
 	~DetectorCascade();
 
 	void init();
+  void init(int objWidth, int objHeight);
 
 	void initWindowOffsets();
 	void initWindowsAndScales();

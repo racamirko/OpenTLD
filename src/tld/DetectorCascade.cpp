@@ -22,6 +22,8 @@
  *  Created on: Nov 16, 2011
  *      Author: Georg Nebehay
  */
+#include <assert.h>
+#include <stdio.h>
 
 #include "DetectorCascade.h"
 
@@ -34,9 +36,18 @@ namespace tld {
 //TODO: Convert this to a function
 #define sub2idx(x,y,imgWidthStep) ((int) (floor((x)+0.5) + floor((y)+0.5)*(imgWidthStep)))
 
+
 DetectorCascade::DetectorCascade() {
-	objWidth = -1; //MUST be set before calling init
-	objHeight = -1; //MUST be set before calling init
+  preinit(-1, -1);
+}
+
+DetectorCascade::DetectorCascade(int _objWidth, int _objHeight) {
+  preinit(_objWidth, _objHeight);
+}
+
+void DetectorCascade::preinit(int _objWidth, int _objHeight) {
+	objWidth = _objWidth; //MUST be set before calling init
+	objHeight = _objHeight; //MUST be set before calling init
 	useShift = 1;
 	imgHeight = -1;
 	imgWidth = -1;
@@ -71,7 +82,17 @@ DetectorCascade::~DetectorCascade() {
 	delete detectionResult;
 }
 
-void DetectorCascade::init() {
+
+void DetectorCascade::init(int _objWidth, int _objHeight) {
+	objWidth = _objWidth; //MUST be set before calling init
+	objHeight = _objHeight; //MUST be set before calling init
+
+  assert(imgWidth != -1);
+  assert(imgHeight != -1);
+  assert(imgWidthStep != -1);
+  assert(objWidth != -1);
+  assert(objHeight != -1);
+
 	if(imgWidth == -1 || imgHeight == -1 || imgWidthStep == -1 || objWidth == -1 || objHeight == -1) {
 		printf("Error: Window dimensions not set\n"); //TODO: Convert this to exception
 	}
@@ -85,6 +106,10 @@ void DetectorCascade::init() {
 
 	initialised = true;
 }
+
+void DetectorCascade::init() {
+}
+
 
 //TODO: This is error-prone. Better give components a reference to DetectorCascade?
 void DetectorCascade::propagateMembers() {
