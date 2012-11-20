@@ -25,7 +25,7 @@
 
 #include <cstdlib>
 #include <math.h>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include "DetectorCascade.h"
 #include "EnsembleClassifier.h"

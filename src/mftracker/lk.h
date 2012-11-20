@@ -34,7 +34,7 @@
  * INCLUDES
  ***********************************************************/
 
-#include "opencv/cv.h"
+#include <opencv2/opencv.hpp>
 
 /***********************************************************
  * CONSTANT AND MACRO DEFINITIONS

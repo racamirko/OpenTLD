@@ -27,6 +27,7 @@
 #include "NNClassifier.h"
 #include "TLDUtil.h"
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 using namespace cv;
