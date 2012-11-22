@@ -70,7 +70,7 @@ SOURCE_GROUP(cvblobs FILES ${cvblobs_SOURCES} ${cvblobs_HEADERS})
 SOURCE_GROUP(mftracker FILES ${mftracker_SOURCES} ${mftracker_HEADERS})
 SOURCE_GROUP(tld FILES ${tld_SOURCES} ${tld_HEADERS})
 
-add_library(OpenTLD ${cvblobs_SOURCES}
+add_library(OpenTLD SHARED ${cvblobs_SOURCES}
     ${cvblobs_HEADERS}
 	${mftracker_SOURCES}
 	${mftracker_HEADERS}
