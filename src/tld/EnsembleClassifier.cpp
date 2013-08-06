@@ -143,7 +143,7 @@ int EnsembleClassifier::calcFernFeature(int windowIdx, int treeIdx) {
 
 		int fp0 = img[bbox[0] + off[0]];
 		int fp1 = img[bbox[0] + off[1]];
-		if (fp0>fp1) { index |= 1;}
+            if (fp0>fp1) { index |= 1;}
 		off += 2;
 	}
 	return index;

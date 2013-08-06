@@ -98,10 +98,7 @@ void TLD::selectObject(const Mat& img, Rect * bb) {
 void TLD::processImage(const Mat& img) {
 	storeCurrentData();
     Mat grey_frame;
-    if( img.channels() > 1 )
-        cvtColor( img,grey_frame, CV_RGB2GRAY );
-    else
-        grey_frame = img.clone();
+    cvtColor( img,grey_frame, CV_RGB2GRAY );
 	currImg = grey_frame; // Store new image , right after storeCurrentData();
 
 	if(trackerEnabled) {
